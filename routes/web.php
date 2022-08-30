@@ -43,3 +43,27 @@ Route::controller(LivewireTestController::class)
 
 /* Alpine.js の動作確認用 */
 Route::get('alpine-test/index', [AlpineTestController::class, 'index']);
+
+/* Gate の利用例
+ * middleware('can:Gate名称')で、認可処理を行ってくれる
+ */
+
+/*
+ * manager 以下のルートは、manager-higher のGate でtrue が返らないとアクセスできない
+ * 認可が失敗した場合、403 エラーがレスポンスされる
+ */
+Route::prefix('manager')
+->middleware('can:manager-higher')->group(function(){
+    Route::get('index', function () {
+        /* prefixがついているので、割当されるURLは /manager/index */
+        dump('this user is manager role upper');
+    });
+});
+
+/* user-higher のGate でtrue が返らないとアクセスできない */
+Route::middleware('can:user-higher')
+->group(function(){
+    Route::get('index', function () {
+        dd('this user is user role upper');
+    });
+});
