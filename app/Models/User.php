@@ -27,6 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', /* アプリケーションの操作によってまとめて変更できるカラムとして role を追加 */
     ];
 
     /**

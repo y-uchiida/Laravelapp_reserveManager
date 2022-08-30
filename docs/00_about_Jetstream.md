@@ -31,6 +31,9 @@ $ npm install && npm run dev
 
 # Jetstream が生成したマイグレーションファイルを実行
 $ php artisan migrate
+
+# Jetstream jetstreamが作成した、隠しファイルとなっているコンポーネントファイルを公開し、編集できるようにする
+sail artisan vendor:publish --tag=jetstream-views
 ```
 
 ※ Sail 環境利用時は、先頭に`sail` コマンドをつけて、コンテナ内で実行させる  
