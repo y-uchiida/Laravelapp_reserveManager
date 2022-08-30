@@ -31,6 +31,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'role' => 9, /* ユーザー追加時のデフォルト値として9(一般ユーザー権限)を指定 */
         ]);
     }
 }
