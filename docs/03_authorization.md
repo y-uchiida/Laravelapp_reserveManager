@@ -16,8 +16,69 @@ Laravel では、`Gate` と `Policy` の二種類の認可の仕組みが提供�
 `AuthServiceProvider` クラスに記述したクロージャの関数内で、権限の有無を判定するロジックを記述し、  
 権限があればtrue, なければfalse を返すようにする
 
+```php
+/* app/Providers/AuthServiceProvider.php */
+
+/// (省略)
+
+    public function boot()
+    {
+        $this->registerPolicies();
+
+        /* Gate の定義は、 Gate::define('名称', function($user){ 認可のロジック }) を用いて行う
+         * User モデルに追加したrole カラムを使って、ユーザーの権限レベルを判定するGateを作成する
+         */
+
+        /* システムマスター(admin)の権限がある場合 */
+        Gate::define('admin', function ($user) {
+            return $user->role === 1;
+        });
+
+        /* 管理運用者(manager)以上の権限がある場合 */
+        Gate::define('manager-higher', function ($user) {
+            return $user->role > 0 && $user->role <= 5;
+        });
+
+        /* 一般ユーザー(user)以上の権限がある場合 */
+        Gate::define('user-higher', function ($user) {
+            return $user->role > 0 && $user->role <= 9;
+        });
+    }
+
+```
+
 ログイン中のユーザーの情報でtrueが返れば権限あり、falseになれば権限なし、として扱える
 
+### Gate の利用例(ルーティング)
+```php
+
+/* routes/web.php */
+
+/* Gate の利用例
+ * middleware('can:Gate名称')で、認可処理を行ってくれる
+ */
+
+/*
+ * manager 以下のルートは、manager-higher のGate でtrue が返らないとアクセスできない
+ * 認可が失敗した場合、403 エラーがレスポンスされる
+ */
+Route::prefix('manager')
+->middleware('can:manager-higher')->group(function(){
+    Route::get('index', function () {
+        /* prefixがついているので、割当されるURLは /manager/index */
+        dump('this user is manager role upper');
+    });
+});
+
+/* user-higher のGate でtrue が返らないとアクセスできない */
+Route::middleware('can:user-higher')
+->group(function(){
+    Route::get('index', function () {
+        dd('this user is user role upper');
+    });
+});
+
+```
 
 ### Policy
 Policy クラスとモデルやリソースの間に関連を持たせることで、複数の認可情報をPolicy クラス内に集約させることができるしくみ  
@@ -34,7 +95,7 @@ make:policyコマンドは、空のポリシークラスを生成します。リ
 ```
 
 make:policy コマンドの例
-```
+```bash
 # 空のPostPolicy クラスを作成する
 php artisan make:policy PostPolicy
 
