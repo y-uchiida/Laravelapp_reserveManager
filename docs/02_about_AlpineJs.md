@@ -42,7 +42,34 @@ Alpine.start();
 
 実際には`@livewireScripts` なども一緒に利用することになるので、デフォルトで生成されるbladeのひな型を参考にするのがよい
 
+## x-data
+`x-data={ var:val }` の形式でデータをhtmlに持たせる  
+`x-data` を設置した要素の内側で、この変数をリアクティブに操作できる  
+そのため、ページ全体で共有したいような変数はbody や画面全体のwraperに設定する  
 
+## イベント
+`x-on:click=" console.log('clicked'); "` のように、`x-on:イベント名` でブラウザイベントをリッスンできる  
+Vue.jsと同じく、省略記法は `@click="..."`  
+
+## Livewireで発生させたブラウザイベントのリッスン
+Livewire コンポーネントで、以下のように記述するとブラウザイベントを発生させることができる
+```php
+$this->dispatchBrowserEvent('event_name', ['var' => $value]);
+```
+実際にはカスタムイベントを作成してwindowに発火させているということだと思う
+
+vanilla JSで、以下のようにイベントをリッスンできる
+```JavaScript
+window.addEventListener('event_name', event => {
+    console.log(`event_name emitted... var is ${event.detail.var}`);
+});
+```
+
+Alpine.js の場合は以下
+```html
+<div @event_name.window=" event_name emitted ">
+</div>
+```
 
 ## 参考ドキュメント
 - Alpine.js 公式:

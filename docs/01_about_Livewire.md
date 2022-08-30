@@ -81,7 +81,7 @@ JavaScriptを使わずにSPAが実装できるLaravelのライブラリ
 
   use Livewire\Component;
 
-  /* class内にいろいろなメソッドを追加記述することで利アクティブな動作を実装していく */
+  /* class内にいろいろなメソッドを追加記述することでリアクティブな動作を実装していく */
   class Counter extends Component
   {
     /* 初期状態では、render() から、view ファイルを返すのみ */
