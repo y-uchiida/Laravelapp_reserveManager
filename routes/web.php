@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LivewireTestController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AlpineTestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,3 +40,6 @@ Route::controller(LivewireTestController::class)
     Route::get('index', 'index')->name('index');
     Route::get('register', 'register')->name('register');
 });
+
+/* Alpine.js の動作確認用 */
+Route::get('alpine-test/index', [AlpineTestController::class, 'index']);
