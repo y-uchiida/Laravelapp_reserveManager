@@ -4,6 +4,8 @@ use App\Http\Controllers\LivewireTestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlpineTestController;
 
+use App\Http\Controllers\EventController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,6 +60,9 @@ Route::prefix('manager')
         /* prefixがついているので、割当されるURLは /manager/index */
         dump('this user is manager role upper');
     });
+
+    /* event のリソースコントローラへのアクセス権はマネージャー以上に設定 */
+    Route::resource('events', EventController::class);
 });
 
 /* user-higher のGate でtrue が返らないとアクセスできない */
