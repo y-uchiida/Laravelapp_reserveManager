@@ -30,6 +30,13 @@ class User extends Authenticatable
         'role', /* アプリケーションの操作によってまとめて変更できるカラムとして role を追加 */
     ];
 
+    /* イベント情報とのリレーション(ユーザーごとの予約状況) */
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'reservations')
+        ->withPivot('id', 'number_of_people', 'canceled_date'); /* withInput で、中間テーブルのカラムを扱えるようになる */
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

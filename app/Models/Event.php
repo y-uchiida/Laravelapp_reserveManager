@@ -20,6 +20,13 @@ class Event extends Model
         'is_visible'
     ];
 
+    /* ユーザーとのリレーション(予約したイベント) */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'reservations')
+        ->withPivot('id', 'number_of_people', 'canceled_date');
+    }
+
     /**
      * start_date カラムから、イベント実施の日付を取得する
      */
