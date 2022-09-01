@@ -70,9 +70,8 @@ Route::middleware('can:user-higher')
     Route::get('/mypage/{id}', [MyPageController::class, 'show'])->name('mypage.show');
     Route::post('/mypage/{id}', [MyPageController::class, 'cancel'])->name('mypage.cancel');
 
-
-    Route::get('/{event}', [ReservationController::class, 'detail'])->name('events.detail');
+    // Route::get('/{event}', [ReservationController::class, 'detail'])->name('events.detail');
     Route::post('/{event}', [ReservationController::class, 'reserve'])->name('events.reserve');
-
-
 });
+
+Route::middleware('auth')->get('/{event}', [ReservationController::class, 'detail'])->name('events.detail');
