@@ -80,6 +80,17 @@ Route::middleware('can:user-higher')
 
 ```
 
+### Gate の利用例(Viewテンプレート)
+blade の`@can` ディレクティブを用いると、Gateで設定した認可ロジックを利用して表示を切り替えることができる
+```html
+{{-- manager-higher のGate でtrueを返されるユーザーでログインしていた場合に表示する --}}
+@can('manager-higher')
+<x-jet-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')">
+    イベント管理
+</x-jet-nav-link>
+@endcan
+```
+
 ### Policy
 Policy クラスとモデルやリソースの間に関連を持たせることで、複数の認可情報をPolicy クラス内に集約させることができるしくみ  
 一定以上の複雑な認可を設定したい場合は、Policyを用いたほうがよい
