@@ -90,7 +90,21 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return view('manager.events.show', compact('event'));
+        $reservations = [];
+
+        $users = $event->users;
+
+        foreach($users as $user)
+        {
+            $reservedInfo = [
+                'name' => $user->name,
+                'number_of_people' => $user->pivot->number_of_people, // pivot で中間テーブルである reservations のカラムを取得できる
+                'canceled_date' =>  $user->pivot->canceled_date // canceled_date が設定されているものは、キャンセル済みのため表示に含めない
+            ];
+            $reservations[] = $reservedInfo;
+        }
+
+        return view('manager.events.show', compact('event', 'users', 'reservations'));
     }
 
     /**

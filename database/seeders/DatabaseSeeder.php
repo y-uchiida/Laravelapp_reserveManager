@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Reservation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,5 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call([ UserDefaultSeeder::class ]);
 
         $this->call([ EventSeeder::class ]);
+
+        $this->call([ ReservationSeeder::class ]);
     }
 }
