@@ -61,6 +61,9 @@ Route::prefix('manager')
         dump('this user is manager role upper');
     });
 
+    /* リソースルーティングにないURLは、resource() の呼び出しより先に書いておく(割当を吸われる可能性があるので) */
+    Route::get('events/past', [EventController::class, 'past'])->name('events.past');
+
     /* event のリソースコントローラへのアクセス権はマネージャー以上に設定 */
     Route::resource('events', EventController::class);
 });

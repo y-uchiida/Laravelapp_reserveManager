@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use App\Services\EventService;
+use Carbon\Carbon;
 
 
 class EventController extends Controller
@@ -17,7 +18,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::orderBy('start_date', 'asc')->paginate(10);
+        $today = Carbon::today();
+        $events = Event::whereDate('start_date', '>=', $today)->orderBy('start_date', 'asc')->paginate(10);
         return view('manager.events.index', compact('events'));
     }
 
@@ -124,6 +126,17 @@ class EventController extends Controller
         session()->flash('status', "イベント「{$event->name}」を更新しました");
 
         return to_route('events.index');
+    }
+
+    /**
+     * 本日より前の日付のイベント情報を一覧表示する
+     */
+    public function past()
+    {
+        $today = Carbon::today();
+        $events = Event::whereDate('start_date', '<', $today)->orderBy('start_date', 'asc')->paginate(10);
+
+        return view('manager.events.past', compact('events'));
     }
 
     /**
