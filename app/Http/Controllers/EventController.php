@@ -98,7 +98,32 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        //
+        $check = EventService::countEventDuplication(
+            $request['event_date'],
+            $request['start_time'],
+            $request['end_time']
+        );
+
+        if($check > 1){
+            session()->flash('status', '既に他のイベントが登録されている時間帯です');
+            return redirect()->route('events.edit', ['event' => $event])->withInput();
+        }
+
+        $startDate = EventService::joinDateAndTime($request['event_date'],$request['start_time']);
+        $endDate = EventService::joinDateAndTime($request['event_date'],$request['end_time']);
+
+        $event = Event::findOrFail($event->id);
+        $event->name = $request['event_name'];
+        $event->information = $request['information'];
+        $event->start_date =  $startDate;
+        $event->end_date = $endDate;
+        $event->max_people = $request['max_people'];
+        $event->is_visible = $request['is_visible'];
+        $event->save();
+
+        session()->flash('status', "イベント「{$event->name}」を更新しました");
+
+        return to_route('events.index');
     }
 
     /**
