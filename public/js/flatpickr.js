@@ -2900,6 +2900,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   maxDate: new Date().fp_incr(30) // 本日から30日後までの日付を選択可能にする
 
 });
+/* #calendar の要素に対してflatpickrを適用 */
+
+(0,flatpickr__WEBPACK_IMPORTED_MODULE_0__["default"])("#calendar", {
+  "locale": flatpickr_dist_l10n_ja_js__WEBPACK_IMPORTED_MODULE_1__.Japanese,
+  // 日本語化対応
+  minDate: "today",
+  // 本日以降の日付のみ選択可能にする
+  maxDate: new Date().fp_incr(30) // 本日から30日後までの日付を選択可能にする
+
+});
 /* 時間選択の設定を変数に格納 */
 
 var timepicker_setting = {
@@ -2913,7 +2923,9 @@ var timepicker_setting = {
   // 24時間表記
   minTime: "10:00",
   // 選択可能な時刻を最小10:00に設定
-  maxTime: "20:00" // 選択可能な時刻を最大20:00に設定
+  maxTime: "20:00",
+  // 選択可能な時刻を最大20:00に設定
+  minuteInclement: 30 // 分数の刻みを30分に設定
 
 };
 /* #start_time の要素に対してflatpickrを適用 */

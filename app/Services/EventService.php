@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 class EventService
 {
@@ -34,5 +34,27 @@ class EventService
           ->whereTime('end_date', '>', $startTime)
           ->whereTime('start_date', '<', $endTime)
           ->count();
+     }
+
+     /**
+      * 指定の日付から7日後までのイベントを取得する
+      */
+     public static function getWeekEvents(CarbonImmutable $startDate)
+     {
+        $reservedPeople = DB::table('reservations')
+            ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
+            ->whereNotNull('canceled_date')
+            ->groupBy('event_id');
+
+        return DB::table('events')
+            ->leftJoinSub($reservedPeople, 'reservedPeople', function($join){
+                $join->on('events.id', '=', 'reservedPeople.event_id');
+                })
+            ->whereBetween('start_date', [
+                $startDate->format('Y-m-d'),
+                $startDate->addDay(7)->format('Y-m-d')
+            ])
+            ->orderBy('start_date', 'asc')
+            ->get();
      }
 }
