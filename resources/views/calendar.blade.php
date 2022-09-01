@@ -19,7 +19,7 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
-        <x-jet-input id="calendar" class="block mt-1 w-full" type="text" name="calendar" />
+        @livewire('calendar')
 
         {{-- flatpickr のjsファイルをロード --}}
         <script src="{{ mix('js/flatpickr.js') }}"></script>
