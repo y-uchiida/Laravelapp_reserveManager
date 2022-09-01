@@ -193,7 +193,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // ...
+        'Constant' => App\Constants\EventConst::class, // EventConst を Constant の名前で利用できるようにする
     ])->toArray(),
 
 ];

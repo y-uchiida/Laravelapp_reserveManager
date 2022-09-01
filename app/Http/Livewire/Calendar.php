@@ -5,23 +5,33 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Services\EventService;
 
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 class Calendar extends Component
 {
     public $currenDate;
     public $currentWeek;
     public $events;
+    public $checkDay;
+    public $dayOfWeek;
 
     public function mount()
     {
-        $this->currentDate = Carbon::today()->format('Y年m月d日');
+        $carbonDate = CarbonImmutable::today();
+        $this->currentDate = $carbonDate->format('Y年m月d日');
         $this->currentWeek = [];
-        $this->events = EventService::getWeekEvents(Carbon::today());
+        $this->events = EventService::getWeekEvents($carbonDate);
 
         for ($i = 0; $i < 7; $i++)
         {
-            $this->currentWeek[] = Carbon::today()->addDays($i)->format('m月d日');
+            $targetDate = $carbonDate->addDays($i);
+            $this->checkDay = $targetDate->format('Y-m-d');
+            $this->dayOfWeek = $targetDate->dayName;
+            $this->currentWeek[] = [
+                'day' => $targetDate->format('Y年m月d日'),
+                'checkDay' => $this->checkDay,
+                'dayOfWeek' => $this->dayOfWeek
+            ];
         }
     }
 
@@ -30,14 +40,21 @@ class Calendar extends Component
      */
     public function getDate($date)
     {
-        $carbonDate = Carbon::parse($date);
+        $carbonDate = CarbonImmutable::parse($date);
         $this->currentDate = $carbonDate->format('Y年m月d日');
         $this->currentWeek = [];
-        $this->events = EventService::getWeekEvents(Carbon::parse($date));
+        $this->events = EventService::getWeekEvents(CarbonImmutable::parse($date));
 
         for($i = 0; $i < 7; $i++)
         {
-            $this->currentWeek[] = $carbonDate->addDays($i)->format('m月d日');
+            $targetDate = $carbonDate->addDays($i);
+            $this->checkDay = $targetDate->format('Y-m-d');
+            $this->dayOfWeek = $targetDate->dayName;
+            $this->currentWeek[] = [
+                'day' => $targetDate->format('Y年m月d日'),
+                'checkDay' => $this->checkDay,
+                'dayOfWeek' => $this->dayOfWeek
+            ];
         }
     }
 

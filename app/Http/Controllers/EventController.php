@@ -25,7 +25,7 @@ class EventController extends Controller
         /* 予約しているユーザーの人数をイベントごとに集計 */
         $reservedPeople = Reservation::query()
             ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
-            ->whereNotNull('canceled_date')
+            ->whereNull('canceled_date')
             ->groupBy('event_id');
 
         $events = Event::query()
@@ -165,7 +165,7 @@ class EventController extends Controller
         /* 予約しているユーザーの人数をイベントごとに集計 */
         $reservedPeople = Reservation::query()
             ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
-            ->whereNotNull('canceled_date')
+            ->whereNull('canceled_date')
             ->groupBy('event_id');
 
 

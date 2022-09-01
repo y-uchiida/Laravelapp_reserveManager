@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 class EventService
 {
@@ -39,7 +39,7 @@ class EventService
      /**
       * 指定の日付から7日後までのイベントを取得する
       */
-     public static function getWeekEvents(Carbon $startDate)
+     public static function getWeekEvents(CarbonImmutable $startDate)
      {
         $reservedPeople = DB::table('reservations')
             ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))

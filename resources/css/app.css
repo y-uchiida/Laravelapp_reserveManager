@@ -1,6 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import 'flatpickr/dist/flatpickr.css';
+
 
 /* flatpickr のCSSファイルを読み込み */
 @import 'flatpickr/dist/flatpickr.css';
