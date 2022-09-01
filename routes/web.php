@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\LivewireTestController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AlpineTestController;
 
+use App\Http\Controllers\AlpineTestController;
+use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ReservationController;
 
@@ -64,7 +65,13 @@ Route::middleware('can:user-higher')
 ->group(function(){
 
     Route::get('/dashboard', [ReservationController::class, 'dashboard'])->name('dashboard');
-    Route::get('/{event}', [ReservationController::class, 'detail'])->name('events.detail');
-    Route::post('/{event}', [ReservationController::class, 'reserve'])->name('events.reserve');
 
+    Route::get('/mypage', [MyPageController::class, 'index'])->name('mypage.index');
+    Route::get('/mypage/{id}', [MyPageController::class, 'show'])->name('mypage.show');
+    Route::post('/mypage/{id}', [MyPageController::class, 'cancel'])->name('mypage.cancel');
+
+    // Route::get('/{event}', [ReservationController::class, 'detail'])->name('events.detail');
+    Route::post('/{event}', [ReservationController::class, 'reserve'])->name('events.reserve');
 });
+
+Route::middleware('auth')->get('/{event}', [ReservationController::class, 'detail'])->name('events.detail');
