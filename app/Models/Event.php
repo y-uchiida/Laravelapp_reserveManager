@@ -31,6 +31,16 @@ class Event extends Model
     }
 
     /**
+     * start_date カラムから、Date フォーマット互換の日付を取得する
+     */
+    protected function editEventDate(): Attribute
+    {
+        return new Attribute(
+            get: fn() => Carbon::parse($this->start_date)->format('Y-m-d')
+        );
+    }
+
+    /**
      * start_date カラムから、イベントの開始時刻を取得する
      */
     protected function startTime(): Attribute

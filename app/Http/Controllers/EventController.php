@@ -86,7 +86,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        return view('manager.events.edit', compact('event'));
     }
 
     /**
