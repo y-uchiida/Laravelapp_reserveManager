@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlpineTestController;
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,16 +20,6 @@ use App\Http\Controllers\EventController;
 
 Route::get('/', function () {
     return view('calendar');
-});
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
 });
 
 /* Livewireの動作確認用 */
@@ -71,7 +62,9 @@ Route::prefix('manager')
 /* user-higher のGate でtrue が返らないとアクセスできない */
 Route::middleware('can:user-higher')
 ->group(function(){
-    Route::get('index', function () {
-        dd('this user is user role upper');
-    });
+
+    Route::get('/dashboard', [ReservationController::class, 'dashboard'])->name('dashboard');
+    Route::get('/{event}', [ReservationController::class, 'detail'])->name('events.detail');
+    Route::post('/{event}', [ReservationController::class, 'reserve'])->name('events.reserve');
+
 });
